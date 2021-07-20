@@ -86,3 +86,5 @@ class Pharmay:
 
 
 
+class ABC:
+    pass
