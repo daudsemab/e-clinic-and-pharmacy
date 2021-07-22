@@ -70,7 +70,7 @@ class Date:
         m_objection = 'KINDLY ENTER VALID MONTH NUMBER!'
         y_objection = 'KINDLY ENTER VALID YEAR NUMBER!'
         while True:
-            y = int(input('Enter Year: '))
+            y = input_integer("Enter Year: ")
             try:
                 if y <= 0:
                     print(y_objection)

@@ -34,3 +34,5 @@ class Medicine:
         self.exp_date = kwargs['exp_date']
         self.drug_id = self.manufacturer.manufacturer_id + len(Medicine.medicines) + 1
 
+
+
