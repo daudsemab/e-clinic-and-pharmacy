@@ -1,20 +1,22 @@
-def input_integer(text_to_display):
-    """
-    This function will take input from the user check if the input is an integer or not.
-    If its not, func will raise exception and let the user try again to input integer until
-    user enter the integer.
-    :param text_to_display:
-    :return: integer
-    """
-    while True:
-        try:
-            num = int(input(f'{text_to_display}'))
-            return num
-        except ValueError:
-            print('(ValueError) WARNING! Input should be an integer.')
-        except Exception as e:
-            print(e)
-            continue
+integer_warning = '(ValueError) WARNING! Input should be an integer.'
+
+
+# Custom Exception - 1
+class InvalidYear(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
+# Custom Exception - 2
+class InvalidMonth(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
+# Custom Exception - 3
+class InvalidDay(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
 
 
 class Date:
@@ -64,120 +66,68 @@ class Date:
         else:
             return False
 
+    @staticmethod
+    def input_year():
+        while True:
+            try:
+                year = int(input('Enter Year (i.e. 2020): '))
+                if year <= 0:
+                    raise InvalidYear('WARNING! Year cannot be zero or less than zero.')
+                return year
+            except ValueError:
+                print(integer_warning)
+            except Exception as e:
+                print(e)
+                continue
+
+    @staticmethod
+    def input_month():
+        while True:
+            try:
+                month = int(input('Enter Month (i.e. 1 -> 12): '))
+                if (month > 12) or (month <= 0):
+                    raise InvalidMonth('WARNING! Month can never be less than 1 and greater than 12.')
+                return month
+            except ValueError:
+                print(integer_warning)
+            except Exception as e:
+                print(e)
+                continue
+
+    @staticmethod
+    def input_day(month, year):
+        months = (
+            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+            'November',
+            'December')
+        while True:
+            try:
+                day = int(input('Enter Day (i.e. 1-31): '))
+                is_leap = (year % 4 == 0)
+                if (day <= 0) or (day > 31):
+                    raise InvalidDay('WARNING! Day can never be zero or less than zero and greater than 31.')
+                else:
+                    if (not is_leap) and (month == 2):
+                        if day > 28:
+                            raise InvalidDay(
+                                'WARNING! In February Day cannot be greater than 28, if it\'s non-leap year.')
+                        elif day > 29:
+                            raise InvalidDay('WARNING! In February, Day cannot be greater than 29, if it\'s leap year.')
+                    elif (day > 30) and (month in [4, 6, 9, 11]):
+                        raise InvalidDay(f'WARNING! In {months[month - 1]}, Day cannot be greater than 30.')
+                return month
+            except ValueError:
+                print(integer_warning)
+            except Exception as e:
+                print(e)
+                continue
+
     @classmethod
     def add_date(cls):
-        d_objection = 'KINDLY ENTER VALID DAY NUMBER!'
-        m_objection = 'KINDLY ENTER VALID MONTH NUMBER!'
-        y_objection = 'KINDLY ENTER VALID YEAR NUMBER!'
-        while True:
-            y = input_integer("Enter Year: ")
-            try:
-                if y <= 0:
-                    print(y_objection)
-                    continue
-                else:
-                    break
-            except ValueError:
-                print(y_objection)
-                continue
-
-        while True:
-            m = int(input('Enter Month (i.e. 1-12): '))
-            try:
-                if (m > 12) or (m <= 0):
-                    print(m_objection)
-                    continue
-                else:
-                    break
-            except ValueError:
-                print(m_objection)
-                continue
-
-        while True:
-            d = int(input('Enter Day (i.e. 1-31): '))
-            is_leap = (y % 4 == 0)
-            try:
-                if (not is_leap and ((m == 2) and ((d > 28) or (d <= 0)))) or (
-                        is_leap and ((m == 2) and ((d > 29) or (d <= 0)))) or (
-                        ((d > 30) and (d <= 0)) and (m in [4, 6, 9, 11])) or (
-                        d <= 0):
-                    print(d_objection)
-                    continue
-                else:
-                    break
-            except ValueError:
-                print('KINDLY ENTER VALID DAY NUMBER!')
-                continue
-        print('')
+        y = Date.input_year()
+        m = Date.input_month()
+        d = Date.input_day(m, y)
         return cls(d, m, y)
-
-
-class Time:
-    def __init__(self, hour, minute):
-        if (hour <= 24) or (hour >= 0):
-            self.__hour = hour
-            self.__minute = minute
-
-    def get_hour(self):
-        return self.__hour
-
-    def get_minute(self):
-        return self.__minute
-
-    def set_hour(self, n_hour):
-        self.__hour = n_hour
-
-    def set_minute(self, n_minute):
-        self.__minute = n_minute
-
-    def __eq__(self, other):
-        if (self.__hour == other.__hour) and (self.__minute == other.__minute):
-            return True
-        else:
-            return False
-
-    def __sub__(self, other):
-        hours = self.__hour - other.__hour
-        minutes = self.__minute - other.__minute
-        return Time(hours, minutes)
-
-    def __gt__(self, other):
-        if (self.__hour >= other.__hour) and (self.__minute > other.__minute):
-            return True
-        else:
-            return False
-
-    @classmethod
-    def add_time(cls):
-        t_objection = 'KINDLY ENTER VALID INPUT!'
-        # Take Hours
-        while True:
-            h = int(input('Enter Hour (i.e. 1-24): '))
-            try:
-                if (h > 24) or (h < 1):
-                    print(t_objection)
-                    continue
-                else:
-                    break
-            except ValueError:
-                print(t_objection)
-                continue
-        # Take Minutes
-        while True:
-            m = int(input('Enter Minutes (i.e. 0-60): '))
-            try:
-                if (m > 60) or (m < 0):
-                    print(t_objection)
-                    continue
-                else:
-                    break
-            except ValueError:
-                print(t_objection)
-                continue
-        return cls(h, m)
-
-    def display(self):
-        return f'{self.__hour}:{self.__minute}'
 
 
 class Person:
@@ -186,23 +136,3 @@ class Person:
         self.name = kwargs['name']
         self.gender = kwargs['gender']
         self.age = kwargs['age']
-
-    def update_name(self):
-        """
-        """
-        pass
-
-    def update_password(self):
-        """
-        """
-        pass
-
-    def login(self):
-        """
-        """
-        pass
-
-    def signup(self):
-        """
-        """
-        pass
