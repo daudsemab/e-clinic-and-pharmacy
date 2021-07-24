@@ -124,7 +124,8 @@ class Date:
                 continue
 
     @classmethod
-    def add_date(cls):
+    def add_date(cls, statement=''):
+        print(statement)
         y = Date.input_year()
         m = Date.input_month()
         d = Date.input_day(m, y)
@@ -146,10 +147,29 @@ def input_alpha(subject, text_to_display) -> str:
     """
     while True:
         try:
-            name = input(f'{text_to_display}: ')
+            name = input(f'{text_to_display}')
             if set(name) > set(ascii_letters):
                 raise InvalidName(f'WARNING! {subject} can only contain alphabets.')
             return name
+        except Exception as e:
+            print(e)
+            continue
+
+
+def input_integer(text_to_display) -> int:
+    """
+    This function will take input from the user check if the input is an integer or not.
+    If its not, func will raise exception and let the user try again to input integer until
+    user enter an integer.
+    :param text_to_display: A string type statement to ask for integer.
+    :return: integer
+    """
+    while True:
+        try:
+            num = int(input(f'{text_to_display}'))
+            return num
+        except ValueError:
+            print(integer_warning)
         except Exception as e:
             print(e)
             continue
