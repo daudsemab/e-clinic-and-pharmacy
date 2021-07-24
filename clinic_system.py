@@ -26,13 +26,15 @@ class Doctor(Person):
 
 class Prescription:
     def __init__(self, **kwargs):
+        """
+        """
         pass
 
 
 class Patient(Person):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.prescription = [kwargs['prescription']]  # ???????????
+        self.prescription = [kwargs['prescription']]
         self.sickness = kwargs['sickness']
         self.family_code = kwargs['family_code']
         self.acc_amount = kwargs['acc_amount']

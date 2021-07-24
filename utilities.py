@@ -1,23 +1,8 @@
 from string import ascii_letters
+import custom_exceptions
+
+
 integer_warning = '(ValueError) WARNING! Input should be an integer.'
-
-
-# Custom Exception - 1
-class InvalidYear(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
-
-
-# Custom Exception - 2
-class InvalidMonth(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
-
-
-# Custom Exception - 3
-class InvalidDay(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
 
 
 class Date:
@@ -46,26 +31,6 @@ class Date:
 
     def display(self):
         return f'Day/Month/Year: {self.__day}/{self.__month}/{self.__year}'
-
-    def __eq__(self, other):
-        if (self.__day == other.__day) and (self.__month == other.__month) and (self.__year == other.__year):
-            return True
-        else:
-            return False
-
-    def __lt__(self, other):
-        if self.__year < other.__year:
-            return True
-        elif self.__year == other.__year:
-            if self.__month < other.__month:
-                return True
-            elif self.__month == other.__month:
-                if self.__day < other.__day:
-                    return True
-            else:
-                return False
-        else:
-            return False
 
     @staticmethod
     def input_year():
@@ -131,19 +96,37 @@ class Date:
         d = Date.input_day(m, y)
         return cls(d, m, y)
 
+    # Operator Overloading
+    def __eq__(self, other):
+        if (self.__day == other.__day) and (self.__month == other.__month) and (self.__year == other.__year):
+            return True
+        else:
+            return False
 
-# Custom Exception - 4
-class InvalidName(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __lt__(self, other):
+        if self.__year < other.__year:
+            return True
+        elif self.__year == other.__year:
+            if self.__month < other.__month:
+                return True
+            elif self.__month == other.__month:
+                if self.__day < other.__day:
+                    return True
+            else:
+                return False
+        else:
+            return False
+
+    def __str__(self):
+        return f'{self.__day}/{self.__month}/{self.__year}'
 
 
-def input_alpha(subject, text_to_display) -> str:
+def input_alpha(subject: str, text_to_display: str) -> str:
     """
     Function will raise exception if the input is not only alphabetical; And ask until valid input entered.
     :param subject: It can be 'name' or anything that contains only alphabets.
     :param text_to_display: Its a statement to ask for input subject(i.e name)
-    :return: It will return subject.
+    :return string: It will return subject.
     """
     while True:
         try:
@@ -156,7 +139,7 @@ def input_alpha(subject, text_to_display) -> str:
             continue
 
 
-def input_integer(text_to_display) -> int:
+def input_integer(text_to_display: str) -> int:
     """
     This function will take input from the user check if the input is an integer or not.
     If its not, func will raise exception and let the user try again to input integer until
