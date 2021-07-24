@@ -1,3 +1,4 @@
+from string import ascii_letters
 integer_warning = '(ValueError) WARNING! Input should be an integer.'
 
 
@@ -128,6 +129,30 @@ class Date:
         m = Date.input_month()
         d = Date.input_day(m, y)
         return cls(d, m, y)
+
+
+# Custom Exception - 4
+class InvalidName(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
+def input_alpha(subject, text_to_display) -> str:
+    """
+    Function will raise exception if the input is not only alphabetical; And ask until valid input entered.
+    :param subject: It can be 'name' or anything that contains only alphabets.
+    :param text_to_display: Its a statement to ask for input subject(i.e name)
+    :return: It will return subject.
+    """
+    while True:
+        try:
+            name = input(f'{text_to_display}: ')
+            if set(name) > set(ascii_letters):
+                raise InvalidName(f'WARNING! {subject} can only contain alphabets.')
+            return name
+        except Exception as e:
+            print(e)
+            continue
 
 
 class Person:
