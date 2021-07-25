@@ -23,6 +23,8 @@ class Manufacturer:
                     break
             else:
                 self.medicines.append(medicine)
+        else:
+            self.medicines.append(medicine)
 
     @classmethod
     def add_manufacturer(cls):
@@ -96,7 +98,7 @@ class Medicine:
     @classmethod
     def add_medicine(cls):
         name = input_alpha("Name", "Enter the name of medicine: ")
-        salt = input_alpha("Name", "Enter salt (Chemical) of the medicine: ")
+        salt = input_alpha("Salt", "Enter salt (Chemical) of the medicine: ")
         manufacturer = Medicine.input_manufacturer()
         mfg_date, exp_date = Medicine.__return_valid_dates()
         medicine = cls(name=name, salt=salt, manufacturer=manufacturer, mfg_date=mfg_date, exp_date=exp_date)
@@ -145,7 +147,7 @@ class Pharmacy:
     def calculate_expired_drugs(self):
         today = Date.add_date("Enter Today's Date!")
         for drug in self.inventory:
-            if today == drug.exp_date:
+            if drug.exp_date <= today:
                 self.expired_drugs.append(drug)
 
     def display_expired_drugs(self):

@@ -1,5 +1,5 @@
 from string import ascii_letters
-import custom_exceptions
+from custom_exceptions import InvalidYear, InvalidMonth, InvalidDay, InvalidName
 
 
 integer_warning = '(ValueError) WARNING! Input should be an integer.'
@@ -47,7 +47,7 @@ class Date:
                 continue
 
     @staticmethod
-    def input_month():
+    def input_month() -> int:
         while True:
             try:
                 month = int(input('Enter Month (i.e. 1 -> 12): '))
