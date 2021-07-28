@@ -22,3 +22,7 @@ class InvalidName(Error):
 
 class InvalidDates(Error):
     pass
+
+
+class InvalidAnswer(Error):
+    pass
