@@ -24,7 +24,7 @@ class InvalidDates(Error):
     pass
 
 
-class InvalidAnswer(Error):
+class InvalidChoice(Error):
     pass
 
 
