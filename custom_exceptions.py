@@ -26,3 +26,7 @@ class InvalidDates(Error):
 
 class InvalidAnswer(Error):
     pass
+
+
+class InvalidFamilyCode(Error):
+    pass
