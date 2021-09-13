@@ -1,9 +1,4 @@
-# built-in modules
-from random import randint, sample
 from string import ascii_letters
-# local modules
-from custom_exceptions import *
-
 
 integer_warning = '(ValueError) WARNING! Input should be an integer.'
 
@@ -50,7 +45,7 @@ class Date:
                 continue
 
     @staticmethod
-    def input_month() -> int:
+    def input_month():
         while True:
             try:
                 month = int(input('Enter Month (i.e. 1 -> 12): '))
@@ -99,10 +94,6 @@ class Date:
         d = Date.input_day(m, y)
         return cls(d, m, y)
 
-    @classmethod
-    def read_date(cls, date: tuple):
-        return cls(date[0], date[1], date[2])
-
     # Operator Overloading
     def __eq__(self, other):
         if (self.__day == other.__day) and (self.__month == other.__month) and (self.__year == other.__year):
@@ -137,8 +128,8 @@ def input_alpha(subject: str, text_to_display: str) -> str:
     """
     while True:
         try:
-            name = input(f'{text_to_display}')  # For example input: asfd23 => {a,s, f, d, 2, 3}
-            if set(name) > set(ascii_letters):  # Check if its subset or not
+            name = input(f'{text_to_display}')
+            if set(name) > set(ascii_letters):
                 raise InvalidName(f'WARNING! {subject} can only contain alphabets.')
             return name
         except Exception as e:
@@ -165,110 +156,27 @@ def input_integer(text_to_display: str) -> int:
             continue
 
 
-def generate_code() -> str:
-    """
-    :returns string type seven digit alpha numeric code.
-    """
-    return f'{"".join(sample("ABC", k=2))}{randint(111, 999)}{"".join(sample("XYZ", k=2))}'     # 'AC123XZ'
-
-
-class Family:
-    families = []
-
-    def __init__(self, family_code=0):
-        if family_code:
-            self.family_code = family_code
-        else:
-            self.family_code = generate_code()
-        self.family_members = []
-        self.acc_amount = 700000
-
-    @staticmethod
-    def input_family_code():
-        while True:
-            try:
-                code = input_integer('Enter family code: ')
-                for family in Family.families:
-                    if family.family_code == code:
-                        return code
-                else:
-                    raise InvalidFamilyCode("WARNING! Your entered family code is invalid.")
-            except Exception as e:
-                print(e)
-                continue
-
-    @classmethod
-    def add_family(cls, family_code=0):
-        family = cls(family_code)
-        Family.families.append(family)
-        return family
-
-    @staticmethod
-    def add_family_member(family_code: str, person) -> bool:
-        for family in Family.families:
-            if family.family_code == family_code:
-                family.family_members.append(person)
-                return True
-        else:
-            return False
-
-
 class Person:
     def __init__(self, **kwargs):
+        self.id = kwargs['id']
         self.name = kwargs['name']
         self.gender = kwargs['gender']
         self.age = kwargs['age']
-        if kwargs['family']:
-            self.family = kwargs['family']
-        else:
-            while True:
-                try:
-                    answer = input_integer(
-                        "Is your family already registered on this system?\n\t1: YES\n\t2: NO\nENTER 1 OR 2: ")
-                    if answer not in (1, 2):
-                        raise InvalidChoice("WARNING! Your answer is not valid.\nTRY AGAIN!")
-                    elif answer == 1:
-                        code = Family.input_family_code()
-                        self.family = Family(code)
-                        break
-                    elif answer == 2:
-                        self.family = Family()
-                        print(f"Your Family has been created and your family code is: {self.family.family_code}")
-                        break
-                except Exception as e:
-                    print(e)
-                    continue
-        # Person is dependent of family & its id will be generated on the behalf of family code only.
-        self.id = str(len(self.family.family_members) + 1) + self.family.family_code
 
+
+class Diagnosis:
     @classmethod
-    def create_self(cls):
-        name = input_alpha("Name", "Enter Your Name: ")
-        gender = input_alpha("Gender", "Enter Your Gender: ")
-        age = input_integer("Enter Your Age: ")
-        family = Family()
-        return cls(name=name, gender=gender, age=age, family=family)
-
-    def check_bill(self, bill_amount) -> bool:
-        """
-        if person can pay bill
-        :returns boolean
-        """
-        if self.family.acc_amount < bill_amount:
-            return False
-        else:
-            return True
-
-    def pay_bill(self, bill_amount):
-        """
-        Update family account amount
-        :returns float, current amount in the family account
-        """
-        self.family.acc_amount -= bill_amount
-        return self.family.acc_amount
-
-
-class Time:
-    def __init__(self):
-        self.hour = input_integer("Enter Hours: ")
-        self.minute = input_integer("Enter Minutes: ")
+    def disease_and_symptoms_data(cls):
+        flue = [[['Symptom 1 = Fever + Shortage of breathe + Loss of appetite'], ['Pneumonia']], [['Symptom 2 = Fever'],
+                                                                                                  ['Normal Influenza']],
+                [['Symptom 3 = Dry cough + Weakness + Constant fever'], ['Corona']]]
+        head_ache = [[['Symptom 1 = One sided + Nausea + Blurry vision'], ['Migraine']],
+                     [['Symptom 2 = Behind an eye + Eyelid droop + Eye redness + tears'], ['Cluster headache']],
+                     [['Symptom 3 = Pain in cheek bone + Forehead + Bridge of nose'], ['Sinus headache']]]
+        blurry_vision = [[['Symptom 1 = Sudden weakness + headache + loss of balance'], ['Stroke']],
+                         [['Symptom 2 = Frequent urination + tingling limbs + feeling hungry'], ['Diabetes']],
+                         [['Symptom 3 = Vision losing one eye + Pain around eye', ['Optic neuritis']]]]
+        chest_tightness = [[['Symptom 1 = tenderness + swelling'], ['Muscle strain']],
+                           [['Symptom 2 = Shortness of breathe + coughing'], ['Asthma']]]
+        diseases = flue, head_ache, blurry_vision, chest_tightness
+        return diseases

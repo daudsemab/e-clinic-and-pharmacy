@@ -4,6 +4,10 @@ class Error(Exception):
         super().__init__(*args)
 
 
+class AmountExceedError(Error):
+    pass
+
+
 class InvalidYear(Error):
     pass
 
